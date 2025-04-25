@@ -6,34 +6,66 @@
   <title>ToDo App</title>
   <link rel="stylesheet" href="style.css" />
   <base href="/todo-app/">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
   <header class="header">
     <img src="assets/logo.png" alt="ToDo App Logo" class="logo" />
   </header>
 
-  <button class="floating-button float-left" title="Adicionar Tarefa">+</button>
-  <button class="floating-button float-right" title="Remover Tarefa">-</button>
+  <div x-data="{ 
+      taskList: [], 
+      newTask: { content: '', startTime: '', endTime: '', days: [] },
+      showModal: false, 
+      filter: 'all', 
+  }">
+    <button class="floating-button float-left" title="Adicionar Tarefa" x-on:click="showModal = true">+</button>
+    <button class="floating-button float-right" title="Remover Tarefa">-</button>
 
-  <div class="todo-list">
-    <div class="todo-item">
-      <input type="checkbox" />
-      <span>Beber água</span>
+    <div class="todo-list">
+      <template x-for="task in taskList" :key="task.id">
+        <div class="todo-item">
+          <input type="checkbox" x-model="task.done"/>
+          <span x-text="task.content" :class="{'done': task.done}"></span>
+        </div>
+      </template>
     </div>
-    <div class="todo-item">
-      <input type="checkbox" />
-      <span>Tomar banho</span>
-    </div>
-    <div class="todo-item">
-      <input type="checkbox" checked />
-      <span>Estudar HTML</span>
-    </div>
-  </div>
 
-  <div class="bottom-menu">
-    <button class="active">All</button>
-    <button>Working</button>
-    <button>Done</button>
+    <div x-show="showModal" class="modal-overlay" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+      <div class="modal">
+        <h2>Adicionar Tarefa</h2>
+        <label for="task-content">Conteúdo:</label>
+        <input type="text" id="task-content" x-model="newTask.content" placeholder="Descrição da tarefa" />
+
+        <label for="start-time">Começo:</label>
+        <input type="time" id="start-time" x-model="newTask.startTime" />
+
+        <label for="end-time">Término:</label>
+        <input type="time" id="end-time" x-model="newTask.endTime" />
+
+        <fieldset>
+          <legend>Recorrência:</legend>
+          <label><input type="checkbox" value="Monday" x-model="newTask.days" /> Segunda</label>
+          <label><input type="checkbox" value="Tuesday" x-model="newTask.days" /> Terça</label>
+          <label><input type="checkbox" value="Wednesday" x-model="newTask.days" /> Quarta</label>
+          <label><input type="checkbox" value="Thursday" x-model="newTask.days" /> Quinta</label>
+          <label><input type="checkbox" value="Friday" x-model="newTask.days" /> Sexta</label>
+          <label><input type="checkbox" value="Saturday" x-model="newTask.days" /> Sábado</label>
+          <label><input type="checkbox" value="Sunday" x-model="newTask.days" /> Domingo</label>
+        </fieldset>
+
+        <div class="modal-buttons">
+          <button x-on:click="showModal = false">Cancelar</button>
+          <button x-on:click="taskList.push({ ...newTask, id: Date.now() }); newTask = { content: '', startTime: '', endTime: '', days: [] }; showModal = false;">Adicionar Tarefa</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-menu">
+      <button :class="{'active': filter === 'all'}" x-on:click="filter = 'all'">Todos</button>
+      <button :class="{'active': filter === 'today'}" x-on:click="filter = 'today'">Hoje</button>
+      <button :class="{'active': filter === 'week'}" x-on:click="filter = 'week'">Semana</button>
+    </div>
   </div>
 </body>
 </html>
