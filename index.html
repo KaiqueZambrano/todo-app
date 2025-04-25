@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,16 +16,37 @@
   <div x-data="{ 
       taskList: [], 
       newTask: { content: '', startTime: '', endTime: '', days: [] },
+      selectedTasks: [],
       showModal: false, 
-      filter: 'all', 
+      filter: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][new Date().getDay()], 
   }">
-    <button class="floating-button float-left" title="Adicionar Tarefa" x-on:click="showModal = true">+</button>
-    <button class="floating-button float-right" title="Remover Tarefa">-</button>
+    <button class="floating-button float-left" title="Adicionar Tarefa" x-on:click="showModal = true">
+        +
+    </button>
+    <button 
+      class="floating-button float-right" 
+      title="Remover Tarefa" 
+      x-on:click="
+        if (selectedTasks.length > 0) {
+          taskList = taskList.filter(t => !selectedTasks.includes(t.id));
+          selectedTasks = [];
+        } else {
+          alert('Clique em uma ou mais tarefas para selecioná-las.');
+        }
+      "
+    >
+      -
+    </button>
 
     <div class="todo-list">
       <template x-for="task in taskList" :key="task.id">
-        <div class="todo-item">
-          <input type="checkbox" x-model="task.done"/>
+        <div 
+          class="todo-item" 
+          x-show="task.days.includes(filter)" 
+          @click="selectedTasks.includes(task.id) ? selectedTasks = selectedTasks.filter(id => id !== task.id) : selectedTasks.push(task.id)"
+          :class="{ 'selected': selectedTasks.includes(task.id) }"
+        >
+          <input type="checkbox" x-model="task.done" @click.stop />
           <span x-text="task.content" :class="{'done': task.done}"></span>
         </div>
       </template>
@@ -56,15 +77,36 @@
 
         <div class="modal-buttons">
           <button x-on:click="showModal = false">Cancelar</button>
-          <button x-on:click="taskList.push({ ...newTask, id: Date.now() }); newTask = { content: '', startTime: '', endTime: '', days: [] }; showModal = false;">Adicionar Tarefa</button>
+
+          <button 
+            x-on:click="
+              if (newTask.content.trim() === '') {
+                  alert('O conteúdo da tarefa não pode estar vazio.');
+              } else if (newTask.days.length === 0) {
+                  alert('Você deve selecionar pelo menos um dia.');
+              } else if (newTask.startTime > newTask.endTime) {
+                  alert('O horário de início não pode ser maior que o horário de término.');
+              } else {
+                  taskList.push({ ...newTask, id: Date.now(), done: false });
+                  newTask = { content: '', startTime: '', endTime: '', days: [] };
+                  showModal = false;
+              }
+            "
+          >
+            Adicionar Tarefa
+          </button>
         </div>
       </div>
     </div>
 
     <div class="bottom-menu">
-      <button :class="{'active': filter === 'all'}" x-on:click="filter = 'all'">Todos</button>
-      <button :class="{'active': filter === 'today'}" x-on:click="filter = 'today'">Hoje</button>
-      <button :class="{'active': filter === 'week'}" x-on:click="filter = 'week'">Semana</button>
+      <button :class="{'active': filter === 'Monday'}" x-on:click="filter = 'Monday'">S</button>
+      <button :class="{'active': filter === 'Tuesday'}" x-on:click="filter = 'Tuesday'">T</button>
+      <button :class="{'active': filter === 'Wednesday'}" x-on:click="filter = 'Wednesday'">Q</button>
+      <button :class="{'active': filter === 'Thursday'}" x-on:click="filter = 'Thursday'">Q</button>
+      <button :class="{'active': filter === 'Friday'}" x-on:click="filter = 'Friday'">S</button>
+      <button :class="{'active': filter === 'Saturday'}" x-on:click="filter = 'Saturday'">S</button>
+      <button :class="{'active': filter === 'Sunday'}" x-on:click="filter = 'Sunday'">D</button>
     </div>
   </div>
 </body>
