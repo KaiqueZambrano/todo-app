@@ -332,3 +332,9 @@ legend {
 .bottom-menu button:hover {
   color: var(--color-primary);
 }
+
+body.dark .floating-button,
+body.dark .modal-buttons button,
+body.dark .bottom-menu button {
+  color: #ffffff;
+}
