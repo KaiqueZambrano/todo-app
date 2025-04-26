@@ -17,7 +17,7 @@
       <button
         class="floating-button float-left"
         title="Adicionar Tarefa"
-        x-on:click="showModal = true"
+        x-on:click="showAddModal = true"
       >
         +
       </button>
@@ -38,13 +38,22 @@
             @click="toggleSelection(task.id)"
             :class="{ 'selected': selectedTasks.includes(task.id) }"
           >
-            <input type="checkbox" x-model="task.done" @click.stop />
-            <span x-text="task.content" :class="{ 'done': task.done }"></span>
+            <div class="todo-text">
+              <span x-text="task.content"></span>
+              <div
+                class="todo-dates"
+                x-show="task.startTime && task.endTime"
+                x-text="`Início: ${task.startTime} · Término: ${task.endTime}`"
+              ></div>
+            </div>
+            <button class="edit-button" title="Editar tarefa" @click.stop="openEditModal(task)">
+              ✏️
+            </button>
           </div>
         </template>
       </div>
 
-      <div x-show="showModal" class="modal-overlay">
+      <div x-show="showAddModal" class="modal-overlay">
         <div class="modal">
           <h2>Adicionar Tarefa</h2>
 
@@ -74,8 +83,44 @@
           </fieldset>
 
           <div class="modal-buttons">
-            <button x-on:click="showModal = false">Cancelar</button>
+            <button x-on:click="showAddModal = false">Cancelar</button>
             <button x-on:click="addTask()">Adicionar Tarefa</button>
+          </div>
+        </div>
+      </div>
+
+      <div x-show="showEditModal" class="modal-overlay">
+        <div class="modal">
+          <h2>Editar Tarefa</h2>
+
+          <label for="edit-task-content">Conteúdo:</label>
+          <input
+            type="text"
+            id="edit-task-content"
+            x-model="taskToEdit.content"
+            placeholder="Descrição da tarefa"
+          />
+
+          <label for="edit-start-time">Começo:</label>
+          <input type="time" id="edit-start-time" x-model="taskToEdit.startTime" />
+
+          <label for="edit-end-time">Término:</label>
+          <input type="time" id="edit-end-time" x-model="taskToEdit.endTime" />
+
+          <fieldset>
+            <legend>Recorrência:</legend>
+            <label><input type="checkbox" value="Monday" x-model="taskToEdit.days" /> Segunda</label>
+            <label><input type="checkbox" value="Tuesday" x-model="taskToEdit.days" /> Terça</label>
+            <label><input type="checkbox" value="Wednesday" x-model="taskToEdit.days" /> Quarta</label>
+            <label><input type="checkbox" value="Thursday" x-model="taskToEdit.days" /> Quinta</label>
+            <label><input type="checkbox" value="Friday" x-model="taskToEdit.days" /> Sexta</label>
+            <label><input type="checkbox" value="Saturday" x-model="taskToEdit.days" /> Sábado</label>
+            <label><input type="checkbox" value="Sunday" x-model="taskToEdit.days" /> Domingo</label>
+          </fieldset>
+
+          <div class="modal-buttons">
+            <button x-on:click="showEditModal = false">Cancelar</button>
+            <button x-on:click="editTask()">Salvar Alterações</button>
           </div>
         </div>
       </div>

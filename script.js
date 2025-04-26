@@ -7,6 +7,13 @@ function todoApp() {
       endTime: '',
       days: []
     },
+    taskToEdit: { 
+        id: null, 
+        content: '', 
+        startTime: '', 
+        endTime: '', 
+        days: [] 
+    },
     selectedTasks: [],
     filter: [
       'Sunday',
@@ -17,7 +24,8 @@ function todoApp() {
       'Friday',
       'Saturday'
     ][new Date().getDay()],
-    showModal: false,
+    showAddModal: false,
+    showEditModal: false,
 
     addTask() {
       if (this.newTask.content.trim() === '') {
@@ -37,8 +45,7 @@ function todoApp() {
 
       this.taskList.push({
         ...this.newTask,
-        id: Date.now(),
-        done: false
+        id: Date.now()
       });
 
       this.newTask = {
@@ -48,7 +55,7 @@ function todoApp() {
         days: []
       };
 
-      this.showModal = false;
+      this.showAddModal = false;
     },
 
     removeTasks() {
@@ -62,6 +69,34 @@ function todoApp() {
       );
 
       this.selectedTasks = [];
+    },
+
+    openEditModal(task) {
+      this.taskToEdit = JSON.parse(JSON.stringify(task));
+      this.showEditModal = true;
+    },
+
+    editTask() {
+      if (this.taskToEdit.content.trim() === '') {
+        alert('O conteúdo da tarefa não pode estar vazio.');
+        return;
+      }
+
+      if (this.taskToEdit.days.length === 0) {
+        alert('Você deve selecionar pelo menos um dia.');
+        return;
+      }
+
+      if (this.taskToEdit.startTime > this.taskToEdit.endTime) {
+        alert('O horário de início não pode ser maior que o horário de término.');
+        return;
+      }
+      
+      const index = this.taskList.findIndex(t => t.id === this.taskToEdit.id);
+      if (index !== -1) {
+        this.taskList[index] = JSON.parse(JSON.stringify(this.taskToEdit));
+        this.showEditModal = false;
+      }
     },
 
     toggleSelection(id) {
