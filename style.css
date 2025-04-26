@@ -18,6 +18,26 @@
   --color-focus-outline: rgba(98, 0, 238, 0.3);
 }
 
+body.dark {
+  --color-background: #181818;
+  --color-header: #000000;
+  --color-white: #222222;
+  --color-light-gray: #2a2a2a;
+  --color-border-light: #333333;
+  --color-border-medium: #444444;
+  --color-border-dark: #555555;
+  --color-primary: #7b3fe4;
+  --color-primary-dark: #5e2dbd; 
+  --color-accent: #00bcd4;
+  --color-text: #eeeeee;
+  --color-text-muted: #aaaaaa;
+  --color-modal-overlay: rgba(0, 0, 0, 0.7);
+  --color-shadow-light: rgba(0, 0, 0, 0.0);
+  --color-shadow-medium: rgba(0, 0, 0, 0.5);
+  --color-shadow-dark: rgba(0, 0, 0, 0.7);
+  --color-focus-outline: rgba(124, 77, 255, 0.5);
+}
+
 body {
   margin: 0;
   font-family: sans-serif;
@@ -34,6 +54,16 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+}
+
+.dark-mode-toggle {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--color-text);
 }
 
 .logo {
@@ -66,6 +96,10 @@ body {
 .todo-text {
   display: flex;
   flex-direction: column;
+}
+
+.todo-text span {
+  color: var(--color-text);
 }
 
 .todo-dates {
@@ -194,6 +228,10 @@ body {
   border: none;
 }
 
+legend {
+  color: var(--color-text);
+}
+
 .modal-buttons {
   display: flex;
   justify-content: space-between;
@@ -257,7 +295,7 @@ body {
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: #fafafa;
+  background-color: var(--color-header);
   display: flex;
   justify-content: space-around;
   box-shadow: 0 -2px 8px var(--color-shadow-medium);

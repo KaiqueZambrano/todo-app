@@ -5,12 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ToDo App</title>
     <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="script.js"></script>
   </head>
-  <body>
+  <body x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
     <header class="header">
-      <img src="assets/logo.png" alt="ToDo App Logo" class="logo" />
+      <img 
+        :src="darkMode ? 'assets/logo-dark-mode.png' : 'assets/logo.png'" 
+        alt="ToDo App Logo" 
+        class="logo" 
+      />
+
+      <button
+        class="dark-mode-toggle"
+        @click="darkMode = !darkMode"
+        x-text="darkMode ? '☀️' : '🌙'"
+        title="Alternar Dark Mode"
+      ></button>
     </header>
 
     <div x-data="todoApp()">
