@@ -27,6 +27,22 @@ function todoApp() {
     showAddModal: false,
     showEditModal: false,
 
+    toggleSelection(id) {
+      const index = this.selectedTasks.indexOf(id);
+
+      if (index >= 0) {
+        this.selectedTasks.splice(index, 1);
+      } else {
+        this.selectedTasks.push(id);
+      }
+    },
+
+    get sortedTaskList() {
+      return this.taskList
+        .slice()
+        .sort((a, b) => (a.startTime || '').localeCompare(b.startTime || ''));
+    },
+
     addTask() {
       if (this.newTask.content.trim() === '') {
         alert('O conteúdo da tarefa não pode estar vazio.');
@@ -96,16 +112,6 @@ function todoApp() {
       if (index !== -1) {
         this.taskList[index] = JSON.parse(JSON.stringify(this.taskToEdit));
         this.showEditModal = false;
-      }
-    },
-
-    toggleSelection(id) {
-      const index = this.selectedTasks.indexOf(id);
-
-      if (index >= 0) {
-        this.selectedTasks.splice(index, 1);
-      } else {
-        this.selectedTasks.push(id);
       }
     }
   };

@@ -42,7 +42,7 @@
       </button>
 
       <div class="todo-list">
-        <template x-for="task in taskList" :key="task.id">
+        <template x-for="task in sortedTaskList" :key="task.id">
           <div
             class="todo-item"
             x-show="task.days.includes(filter)"
