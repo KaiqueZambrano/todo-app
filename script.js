@@ -1,6 +1,6 @@
 function todoApp() {
   return {
-    taskList: [],
+    taskList: JSON.parse(localStorage.getItem('taskList')) || [],
     newTask: {
       content: '',
       startTime: '',
@@ -26,6 +26,10 @@ function todoApp() {
     ][new Date().getDay()],
     showAddModal: false,
     showEditModal: false,
+
+    saveTasks() {
+      localStorage.setItem('taskList', JSON.stringify(this.taskList));
+    },
 
     toggleSelection(id) {
       const index = this.selectedTasks.indexOf(id);
@@ -64,6 +68,8 @@ function todoApp() {
         id: Date.now()
       });
 
+      this.saveTasks();
+
       this.newTask = {
         content: '',
         startTime: '',
@@ -85,6 +91,7 @@ function todoApp() {
       );
 
       this.selectedTasks = [];
+      this.saveTasks();
     },
 
     openEditModal(task) {
@@ -111,6 +118,7 @@ function todoApp() {
       const index = this.taskList.findIndex(t => t.id === this.taskToEdit.id);
       if (index !== -1) {
         this.taskList[index] = JSON.parse(JSON.stringify(this.taskToEdit));
+        this.saveTasks();
         this.showEditModal = false;
       }
     }
