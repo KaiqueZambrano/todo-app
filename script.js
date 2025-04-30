@@ -1,3 +1,14 @@
+function darkModeToggle() {
+  return {
+    darkMode: JSON.parse(localStorage.getItem('darkMode')) || false,
+
+    toggleDarkMode() {
+      this.darkMode = !this.darkMode;
+      localStorage.setItem('darkMode', JSON.stringify(this.darkMode));
+    }
+  };
+}
+
 function todoApp() {
   return {
     taskList: JSON.parse(localStorage.getItem('taskList')) || [],

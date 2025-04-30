@@ -8,7 +8,7 @@
     <script defer src="script.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </head>
-  <body x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
+  <body x-data="darkModeToggle()" :class="{ 'dark': darkMode }">
     <header class="header">
       <img 
         :src="darkMode ? 'assets/logo-dark-mode.png' : 'assets/logo.png'" 
@@ -18,7 +18,7 @@
 
       <button
         class="dark-mode-toggle"
-        @click="darkMode = !darkMode"
+        @click="toggleDarkMode()"
         x-text="darkMode ? '☀️' : '🌙'"
         title="Alternar Dark Mode"
       ></button>
