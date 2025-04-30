@@ -137,13 +137,13 @@
       </div>
 
       <div class="bottom-menu">
+        <button :class="{ 'active': filter === 'Sunday' }" x-on:click="filter = 'Sunday'">D</button>
         <button :class="{ 'active': filter === 'Monday' }" x-on:click="filter = 'Monday'">S</button>
         <button :class="{ 'active': filter === 'Tuesday' }" x-on:click="filter = 'Tuesday'">T</button>
         <button :class="{ 'active': filter === 'Wednesday' }" x-on:click="filter = 'Wednesday'">Q</button>
         <button :class="{ 'active': filter === 'Thursday' }" x-on:click="filter = 'Thursday'">Q</button>
         <button :class="{ 'active': filter === 'Friday' }" x-on:click="filter = 'Friday'">S</button>
         <button :class="{ 'active': filter === 'Saturday' }" x-on:click="filter = 'Saturday'">S</button>
-        <button :class="{ 'active': filter === 'Sunday' }" x-on:click="filter = 'Sunday'">D</button>
       </div>
     </div>
   </body>
